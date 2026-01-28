@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Chamber - Magical Sequence Predictor - Jonathan</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="castle-background"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="castle-header">
+            <div class="castle-banner">
+                <div class="castle-icon">🏰</div>
+                <h1>Echo Chamber</h1>
+                <p class="subtitle">The Magical Sequence Prediction Castle</p>
+            </div>
+            <div class="harley-logo">
+                <img src="harley-davidson-logo.svg" alt="Harley-Davidson Logo" class="hd-logo">
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="castle-nav">
+            <button class="nav-btn active" data-tab="analyzer">🔮 Analyzer</button>
+            <button class="nav-btn" data-tab="visualizer">📊 Visualizer</button>
+            <button class="nav-btn" data-tab="history">📚 History</button>
+            <button class="nav-btn" data-tab="stats">📈 Statistics</button>
+            <button class="nav-btn" data-tab="docs">📖 Docs</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="castle-main">
+            
+            <!-- Analyzer Tab -->
+            <section id="analyzer" class="tab-content active">
+                <div class="spell-card">
+                    <h2>✨ Sequence Analyzer Spell</h2>
+                    <p>Enter your magical sequence and discover its hidden pattern.</p>
+                    
+                    <div class="spell-input">
+                        <label for="sequenceInput">Enter Sequence (comma or space separated):</label>
+                        <input 
+                            type="text" 
+                            id="sequenceInput" 
+                            placeholder="e.g., 1 2 3 4 5  or  3, 6, 9, 12"
+                            class="input-field"
+                        >
+                    </div>
+
+                    <div class="spell-buttons">
+                        <button id="analyzeBtn" class="btn btn-primary">Analyze Sequence</button>
+                        <button id="clearBtn" class="btn btn-secondary">Clear</button>
+                        <button id="exampleBtn" class="btn btn-tertiary">Load Example</button>
+                    </div>
+
+                    <!-- Example Sequences -->
+                    <div class="examples-grid">
+                        <div class="example-card" data-sequence="1,2,3,4,5">
+                            <h4>Arithmetic +1</h4>
+                            <p>[1, 2, 3, 4, 5]</p>
+                            <span class="pattern-badge">Arithmetic</span>
+                        </div>
+                        <div class="example-card" data-sequence="2,4,8,16">
+                            <h4>Geometric ×2</h4>
+                            <p>[2, 4, 8, 16]</p>
+                            <span class="pattern-badge">Geometric</span>
+                        </div>
+                        <div class="example-card" data-sequence="1,4,9,16,25">
+                            <h4>Quadratic</h4>
+                            <p>[1, 4, 9, 16, 25]</p>
+                            <span class="pattern-badge">Polynomial</span>
+                        </div>
+                        <div class="example-card" data-sequence="3,6,9,12">
+                            <h4>Multiples of 3</h4>
+                            <p>[3, 6, 9, 12]</p>
+                            <span class="pattern-badge">Arithmetic</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsSection" class="spell-card results-hidden">
+                    <h2>🎯 Analysis Results</h2>
+                    
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <label>Pattern Detected:</label>
+                            <span id="patternType" class="result-value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <label>Next Number:</label>
+                            <span id="nextNumber" class="result-value">-</span>
+                        </div>
+                        <div class="result-item">
+                            <label>Confidence:</label>
+                            <span id="confidence" class="result-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="predictions">
+                        <h3>Next 5 Predictions:</h3>
+                        <div id="nextFive" class="prediction-list"></div>
+                    </div>
+
+                    <div class="pattern-details">
+                        <h3>Pattern Details:</h3>
+                        <div id="patternInfo" class="pattern-info"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualizer Tab -->
+            <section id="visualizer" class="tab-content">
+                <div class="spell-card">
+                    <h2>📊 Sequence Visualizer</h2>
+                    <p>See your sequences come to life with beautiful visualizations.</p>
+                    
+                    <div class="visualization-options">
+                        <label>Visualization Type:</label>
+                        <select id="chartType" class="input-field">
+                            <option value="line">Line Chart</option>
+                            <option value="scatter">Scatter Plot</option>
+                            <option value="bar">Bar Chart</option>
+                        </select>
+                    </div>
+
+                    <div id="chartContainer" class="chart-container">
+                        <canvas id="sequenceChart"></canvas>
+                    </div>
+
+                    <div class="chart-stats">
+                        <div class="stat-item">
+                            <span>Min:</span>
+                            <span id="minValue">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Max:</span>
+                            <span id="maxValue">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Average:</span>
+                            <span id="avgValue">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Sum:</span>
+                            <span id="sumValue">-</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Tab -->
+            <section id="history" class="tab-content">
+                <div class="spell-card">
+                    <h2>📚 Analysis History</h2>
+                    <p>Review all your magical discoveries.</p>
+                    
+                    <div class="history-controls">
+                        <button id="clearHistoryBtn" class="btn btn-danger">Clear History</button>
+                        <span id="historyCount" class="history-count">0 analyses</span>
+                    </div>
+
+                    <div id="historyList" class="history-list">
+                        <p class="empty-message">No analyses yet. Perform some sequence analyses!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Tab -->
+            <section id="stats" class="tab-content">
+                <div class="spell-card">
+                    <h2>📈 Statistics & Insights</h2>
+                    <p>Comprehensive analysis of your discoveries.</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Analyses</h3>
+                            <span id="totalAnalyses" class="stat-number">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Arithmetic Patterns</h3>
+                            <span id="arithmeticCount" class="stat-number">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Geometric Patterns</h3>
+                            <span id="geometricCount" class="stat-number">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Polynomial Patterns</h3>
+                            <span id="polynomialCount" class="stat-number">0</span>
+                        </div>
+                    </div>
+
+                    <div id="patternBreakdown" class="pattern-breakdown">
+                        <h3>Pattern Distribution:</h3>
+                        <canvas id="patternChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documentation Tab -->
+            <section id="docs" class="tab-content">
+                <div class="spell-card">
+                    <h2>📖 Documentation & Guide</h2>
+                    
+                    <div class="docs-content">
+                        <h3>🔮 What is Echo Chamber?</h3>
+                        <p>Echo Chamber is an advanced sequence prediction system that detects mathematical patterns in numerical sequences and predicts future values.</p>
+
+                        <h3>🎯 Supported Patterns</h3>
+                        <div class="pattern-docs">
+                            <div class="pattern-doc">
+                                <h4>Arithmetic Progressions</h4>
+                                <p>Sequences with constant difference between consecutive terms.</p>
+                                <p><strong>Example:</strong> 2, 4, 6, 8, 10 (difference = 2)</p>
+                            </div>
+                            <div class="pattern-doc">
+                                <h4>Geometric Progressions</h4>
+                                <p>Sequences with constant ratio between consecutive terms.</p>
+                                <p><strong>Example:</strong> 2, 4, 8, 16, 32 (ratio = 2)</p>
+                            </div>
+                            <div class="pattern-doc">
+                                <h4>Polynomial Sequences</h4>
+                                <p>Sequences following polynomial relationships (quadratic, cubic, etc.).</p>
+                                <p><strong>Example:</strong> 1, 4, 9, 16, 25 (x²)</p>
+                            </div>
+                        </div>
+
+                        <h3>💡 How to Use</h3>
+                        <ol>
+                            <li>Enter your sequence in the Analyzer tab</li>
+                            <li>Click "Analyze Sequence" to detect the pattern</li>
+                            <li>View predictions and visualizations</li>
+                            <li>Track your discoveries in History</li>
+                        </ol>
+
+                        <h3>🧮 Mathematics Behind It</h3>
+                        <p>The analyzer uses difference tables and ratio analysis to detect patterns:</p>
+                        <ul>
+                            <li><strong>First Differences:</strong> For arithmetic detection</li>
+                            <li><strong>Second Differences:</strong> For polynomial detection</li>
+                            <li><strong>Ratio Analysis:</strong> For geometric detection</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="castle-footer">
+            <p>🔮 Echo Chamber v2.0 | Magical Sequence Prediction | <span id="serverStatus" class="status">Checking...</span></p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
